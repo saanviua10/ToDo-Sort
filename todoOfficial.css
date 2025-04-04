@@ -1,0 +1,167 @@
+body{
+    width: 100%;
+    min-height: 100vh;
+    text-align: center;
+    background: linear-gradient(360deg, #000000, #0000BB);
+}
+h1{
+    color: white;
+    font-size: 75px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.mainContainer{
+    width: 500%;
+    min-height: 60vh;
+    display: flex;
+    color: transparent;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: nowrap;
+}
+
+.container1{
+    width: 45%;
+    min-height:10vh;
+    display: flex;
+    padding: 10px;
+    float: left;
+    margin-left: 20px;
+}
+
+.container2{
+    width: 45%;
+    min-height: 50vh;
+    display: flex;
+    padding: 10px;
+    float: right;
+    margin-right: 40px;
+}
+
+.taskBox, .taskBoxInput{
+    width: 100%;
+    max-width: 540px;
+    background: #ffffff;
+    padding: 75px;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.container h2{
+    color: #0000BB;
+    display: flex;
+    font-size: 35px;
+    font-family: 'Courier New', Courier, monospace;
+    align-items: center, top;
+    margin-top: -20px;
+    margin-bottom: 25px;
+    margin: center;
+}
+.taskBox h2{
+    color: #0000BB;
+    display: flex;
+    font-size: 35px;
+    font-family: 'Courier New', Courier, monospace;
+    align-items: center, top;
+    margin-top: -50px;
+    margin-bottom: 25px;
+    margin: center;
+}
+
+input{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0px;
+    border: 1px solid #0000bb;
+    border-radius: 30px;
+    font-size: 20px;
+}
+label{
+    font-size: 20px;
+    color: #0000BB;
+}
+select{
+    width: 25%;
+    padding: 10px;
+    margin: 10px 0px;
+    border: 1px solid #0000bb;
+    border-radius: 30px;
+    font-size: 20px;
+}
+#addTaskButton, #clearButton{
+    width: 50%;
+    padding: 10px;
+    margin: 20px;
+    border: 1px solid #0000BB;
+    border-radius: 30px;
+    font-size: 20px;
+    background: #0000BB;
+    color: white;
+    float: bottom;
+}
+
+.center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+ul li{
+    position: relative;
+    padding-right: 50px;
+    padding: -10px;
+    margin-bottom: 10px;
+    text-align: left;
+    font-size: 30px;
+    list-style-type: none;
+    user-select: none;
+    cursor: pointer;
+
+}
+
+
+ul li::before{
+    content: '';
+    position: absolute;
+    margin-left: -40px;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background-image: url("images/unchecked.png");
+    background-size: cover;
+}
+
+
+.checked{
+    text-decoration: line-through;
+    color: grey;
+}
+
+.checked::before{
+    height: 28px;
+    width: 28px;
+    margin-left: -36px;
+    background-image: url("images/checked.png");
+}
+
+
+ul li span {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 25px;
+    height: 25px;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    line-height: 25px;
+    background: #fff;
+}
+
+
+ul li span:hover{
+    color: #0000bb;
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Title -->
+    <title>To Do Sorter</title>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="todoOfficial.css">
+</head>
+
+<body>
+    <!-- Setting up Intro -->
+    <h1>To Do List Sorter</h1>
+    <!-- Setting up the task list -->
+     <div class="mainContatiner">
+        <div class="container1">
+            <div class="taskBox">
+                <h2 style="align-items:center;">
+                    Tasks
+                    <img src="images/ToDoImage.png" id="sortDown" style="width: 45px; height: 35px;">
+                </h2>
+            
+                <ul id="taskList">
+                    <!--
+                    <li>Task 1: <br>Date - Priority</li>
+                    <li>Task 2: <br>Date - Priority</li>
+                    <li>Task 3: <br>Date - Priority</li>
+                    <li>Task 4: <br>Date - Priority</li>
+                    <li>Task 5: <br>Date - Priority</li>
+                    -->
+                </ul>
+               <button onclick="clearTasks()" id="clearButton">Clear Tasks</button>
+                
+                <h2> </h2>
+                <h2> </h2>
+            </div>
+        </div>
+        <!-- Setting up the task input -->
+        <div class="container2">
+            <div class="taskBoxInput">
+                <input type="text" id="taskInput" placeholder="Enter Task Name">
+                <input type="date" id="dateInput" placeholder="Enter Due Date">
+                <input type="time" id="timeInput" placeholder="Enter Time">
+                <label for="priorityInput">Priority:</label>
+                <select name="priorityInput" id="priorityInput">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <p> </p>
+                <button onclick="taskInput()" id="addTaskButton">Add Task</button>
+            </div>
+        </div>
+        
+    </div>
+
+<script src=todo.js></script>
+</body>
+</html>
