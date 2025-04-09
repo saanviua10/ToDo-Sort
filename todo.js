@@ -51,7 +51,7 @@ function taskInput() {
         return;
     }
 
-    const today = new Date();
+    const constDate = new Date("January 1, 2000 0:00:00");
     let selectedDate = new Date(date.value);
     let year = selectedDate.getFullYear();
     let month = selectedDate.getMonth() + 1;
@@ -61,7 +61,7 @@ function taskInput() {
     taskCheckedStatus.push(false);
 
     selectedDate.setHours(hours, minutes, 0, 0);
-    var timeinmilisec = selectedDate.getTime() - today.getTime();
+    var timeinmilisec = selectedDate.getTime() - constDate.getTime();
 
     // Add task to array and calculate sorting value
     tasksList.push(task.value);
