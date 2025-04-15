@@ -139,10 +139,14 @@ ul li::before{
 }
 
 .checked::before{
-    height: 28px;
-    width: 28px;
-    margin-left: -36px;
+    content: '';
+    position: absolute;
+    margin-left: -40px;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
     background-image: url("checked.png");
+    background-size: cover;
 }
 
 
