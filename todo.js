@@ -1,136 +1,101 @@
-const taskInputEl = document.getElementById("taskInput");
-const timeInputEl = document.getElementById("timeInput");
-const dateInputEl = document.getElementById("dateInput");
-const priorityInputEl = document.getElementById("priorityInput");
-const tList = document.getElementById("taskList");
+const API_URL = 'http://localhost:3000/api/tasks';
 
-var taskSorterNumbers = JSON.parse(localStorage.getItem("taskSorterNumbers")) || [];
-var tasksList = JSON.parse(localStorage.getItem("tasksList")) || [];
-var taskDates = JSON.parse(localStorage.getItem("taskDates")) || [];
-var taskPriorities = JSON.parse(localStorage.getItem("taskPriorities")) || [];
-var taskCheckedStatus = JSON.parse(localStorage.getItem("taskCheckedStatus")) || [];
-
-// Function to save tasks to localStorage
-function saveTasks() {
-    localStorage.setItem("tasksList", JSON.stringify(tasksList));
-    localStorage.setItem("taskSorterNumbers", JSON.stringify(taskSorterNumbers));
-    localStorage.setItem("taskDates", JSON.stringify(taskDates));
-    localStorage.setItem("taskPriorities", JSON.stringify(taskPriorities));
-    localStorage.setItem("taskCheckedStatus", JSON.stringify(taskCheckedStatus));
-}
-
-// Function to load saved tasks when the page loads
-function loadTasks() {
-    tList.innerHTML = ""; // Clear the current list
-
-    tasksList.forEach((taskText, i) => {
-        let li = document.createElement("li");
+// Load tasks from the backend database
+async function loadTasks() {
+    try {
+        const response = await fetch(API_URL);
+        const tasks = await response.json();
         
-        // Display task name along with due date and priority metadata
-        li.innerHTML = `${taskText}<br><small style="color: #666; font-size: 14px;">Due: ${taskDates[i]} | Priority: ${taskPriorities[i]}</small>`;
+        tList.innerHTML = "";
 
-        // Restore checked status from localStorage
-        if (taskCheckedStatus[i]) {
-            li.classList.add("checked");
-        }
+        tasks.forEach((task) => {
+            let li = document.createElement("li");
+            li.dataset.id = task._id; // Store MongoDB ID on the element
+            
+            li.innerHTML = `${task.text}<br><small style="color: #666; font-size: 14px;">Due: ${task.dueDate} ${task.time} | Priority: ${task.priority}</small>`;
 
-        // Create and append the delete button (span)
-        let span = document.createElement("span");
-        span.innerHTML = "\u00d7"; // "×" symbol for delete
-        li.appendChild(span);
+            if (task.checked) {
+                li.classList.add("checked");
+            }
 
-        // Append the <li> to the task list
-        tList.appendChild(li);
-    });
+            let span = document.createElement("span");
+            span.innerHTML = "\u00d7";
+            li.appendChild(span);
+
+            tList.appendChild(li);
+        });
+    } catch (err) {
+        console.error("Error loading tasks:", err);
+    }
 }
 
-function clearTasks() {
-    localStorage.clear();
-    alert("Tasks Cleared");
-    window.location.href = "todoMain.html";
-}
-
-// Function to add a new task (renamed to avoid element ID collisions)
-function addNewTask() {
+// Add a new task via POST request
+async function addNewTask() {
     if (taskInputEl.value === "" || timeInputEl.value === "" || dateInputEl.value === "" || priorityInputEl.value === "") {
         alert("You must fill in all fields!");
         return;
     }
 
     const constDate = new Date(2000, 0, 1, 0, 0, 0);
-    
-    // Parse date safely in local time to avoid timezone offsets
     const [year, month, day] = dateInputEl.value.split('-').map(Number);
     const [hours, minutes] = timeInputEl.value.split(':').map(Number);
     let selectedDate = new Date(year, month - 1, day, hours, minutes, 0, 0);
+    let timeinmilisec = selectedDate.getTime() - constDate.getTime();
+    let sortValue = timeinmilisec * Number(priorityInputEl.value);
 
-    taskCheckedStatus.push(false);
+    const newTask = {
+        text: taskInputEl.value,
+        dueDate: dateInputEl.value,
+        time: timeInputEl.value,
+        priority: Number(priorityInputEl.value),
+        checked: false,
+        sortValue: sortValue
+    };
 
-    var timeinmilisec = selectedDate.getTime() - constDate.getTime();
+    try {
+        await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newTask)
+        });
 
-    // Add task to arrays and calculate sorting value
-    tasksList.push(taskInputEl.value);
-    taskDates.push(`${dateInputEl.value} ${timeInputEl.value}`);
-    taskPriorities.push(priorityInputEl.value);
-    taskSorterNumbers.push(timeinmilisec * Number(priorityInputEl.value));
+        taskInputEl.value = "";
+        timeInputEl.value = "";
+        dateInputEl.value = "";
+        priorityInputEl.value = "1";
 
-    // Sort tasks before displaying
-    sortTasks();
-
-    // Clear inputs
-    taskInputEl.value = "";
-    timeInputEl.value = "";
-    dateInputEl.value = "";
-    priorityInputEl.value = "1";
-
-    // Save to localStorage
-    saveTasks();
-}
-
-// Function to sort tasks
-function sortTasks() {
-    for (let i = 0; i < tasksList.length - 1; i++) {
-        for (let j = 0; j < tasksList.length - i - 1; j++) {
-            if (taskSorterNumbers[j] > taskSorterNumbers[j + 1]) {
-                // Swap sorting numbers
-                [taskSorterNumbers[j], taskSorterNumbers[j + 1]] = [taskSorterNumbers[j + 1], taskSorterNumbers[j]];
-                // Swap task texts
-                [tasksList[j], tasksList[j + 1]] = [tasksList[j + 1], tasksList[j]];
-                // Swap dates
-                [taskDates[j], taskDates[j + 1]] = [taskDates[j + 1], taskDates[j]];
-                // Swap priorities
-                [taskPriorities[j], taskPriorities[j + 1]] = [taskPriorities[j + 1], taskPriorities[j]];
-                // Swap checked statuses
-                [taskCheckedStatus[j], taskCheckedStatus[j + 1]] = [taskCheckedStatus[j + 1], taskCheckedStatus[j]];
-            }
-        }
+        loadTasks();
+    } catch (err) {
+        console.error("Error adding task:", err);
     }
-    
-    loadTasks();
-    saveTasks();
 }
 
-// Event listener for task actions
-tList.addEventListener("click", function (e) {
+// Event listener updates for deleting and toggling
+tList.addEventListener("click", async function (e) {
     if (!e.target.closest("li")) return;
 
     let clickedTask = e.target.closest("li");
-    let index = Array.from(tList.children).indexOf(clickedTask);
+    let taskId = clickedTask.dataset.id;
 
     if (e.target.tagName === "SPAN") {
-        tasksList.splice(index, 1);
-        taskDates.splice(index, 1);
-        taskPriorities.splice(index, 1);
-        taskSorterNumbers.splice(index, 1);
-        taskCheckedStatus.splice(index, 1);
-        clickedTask.remove();
-        saveTasks();
+        await fetch(`${API_URL}/${taskId}`, { method: 'DELETE' });
+        loadTasks();
     } else {
-        clickedTask.classList.toggle("checked");
-        taskCheckedStatus[index] = clickedTask.classList.contains("checked");
-        saveTasks();
+        const isChecked = !clickedTask.classList.contains("checked");
+        await fetch(`${API_URL}/${taskId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ checked: isChecked })
+        });
+        loadTasks();
     }
 });
 
-// Load tasks on page load
+async function clearTasks() {
+    if (confirm("Are you sure you want to clear all tasks?")) {
+        await fetch(API_URL, { method: 'DELETE' });
+        loadTasks();
+    }
+}
+
 window.onload = loadTasks;
