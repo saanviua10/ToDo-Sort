@@ -3,70 +3,52 @@ body{
     min-height: 100vh;
     text-align: center;
     background: linear-gradient(360deg, #000000, #0000BB);
-}
-h1{
-    color: white;
-    font-size: 75px;
+    margin: 0;
     font-family: 'Courier New', Courier, monospace;
 }
 
+h1{
+    color: white;
+    font-size: 75px;
+}
+
 .mainContainer{
-    width: 500%;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
     min-height: 60vh;
     display: flex;
-    color: transparent;
+    color: #333;
     justify-content: center;
     align-items: flex-start;
     gap: 20px;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
 }
 
-.container1{
+.container1, .container2{
     width: 45%;
-    min-height:10vh;
+    min-width: 300px;
     display: flex;
     padding: 10px;
-    float: left;
-    margin-left: 20px;
-}
-
-.container2{
-    width: 45%;
-    min-height: 50vh;
-    display: flex;
-    padding: 10px;
-    float: right;
-    margin-right: 40px;
 }
 
 .taskBox, .taskBoxInput{
     width: 100%;
     max-width: 540px;
     background: #ffffff;
-    padding: 75px;
+    padding: 40px;
     border-radius: 10px;
-    align-items: center;
+    box-sizing: border-box;
 }
 
-.container h2{
+.taskBox h2, .taskBoxInput h2{
     color: #0000BB;
     display: flex;
-    font-size: 35px;
-    font-family: 'Courier New', Courier, monospace;
-    align-items: center, top;
-    margin-top: -20px;
+    font-size: 30px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0;
     margin-bottom: 25px;
-    margin: center;
-}
-.taskBox h2{
-    color: #0000BB;
-    display: flex;
-    font-size: 35px;
-    font-family: 'Courier New', Courier, monospace;
-    align-items: center, top;
-    margin-top: -50px;
-    margin-bottom: 25px;
-    margin: center;
 }
 
 input{
@@ -75,30 +57,39 @@ input{
     margin: 10px 0px;
     border: 1px solid #0000bb;
     border-radius: 30px;
-    font-size: 20px;
+    font-size: 18px;
+    box-sizing: border-box;
 }
+
 label{
-    font-size: 20px;
+    font-size: 18px;
     color: #0000BB;
 }
+
 select{
-    width: 25%;
+    width: 30%;
     padding: 10px;
     margin: 10px 0px;
     border: 1px solid #0000bb;
     border-radius: 30px;
-    font-size: 20px;
+    font-size: 18px;
 }
+
 #addTaskButton, #clearButton{
-    width: 50%;
-    padding: 10px;
-    margin: 20px;
+    width: 60%;
+    padding: 12px;
+    margin: 20px auto;
     border: 1px solid #0000BB;
     border-radius: 30px;
-    font-size: 20px;
+    font-size: 18px;
     background: #0000BB;
     color: white;
-    float: bottom;
+    cursor: pointer;
+    display: block;
+}
+
+#addTaskButton:hover, #clearButton:hover {
+    background: #000088;
 }
 
 .center{
@@ -109,29 +100,27 @@ select{
 
 ul li{
     position: relative;
-    padding-right: 50px;
-    padding: -10px;
+    padding: 10px 50px 10px 45px;
     margin-bottom: 10px;
     text-align: left;
-    font-size: 30px;
+    font-size: 20px;
     list-style-type: none;
     user-select: none;
     cursor: pointer;
-
 }
-
 
 ul li::before{
     content: '';
     position: absolute;
-    margin-left: -40px;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
     height: 30px;
     width: 30px;
     border-radius: 50%;
-    background-image: url("unchecked.png");
+    background-image: url("images/unchecked.png");
     background-size: cover;
 }
-
 
 .checked{
     text-decoration: line-through;
@@ -139,16 +128,8 @@ ul li::before{
 }
 
 .checked::before{
-    content: '';
-    position: absolute;
-    margin-left: -40px;
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
-    background-image: url("checked.png");
-    background-size: cover;
+    background-image: url("images/checked.png");
 }
-
 
 ul li span {
     position: absolute;
@@ -158,14 +139,15 @@ ul li span {
     width: 25px;
     height: 25px;
     font-size: 18px;
-    color: white;
+    color: #333;
     cursor: pointer;
     text-align: center;
     line-height: 25px;
-    background: #fff;
+    background: #eee;
+    border-radius: 50%;
 }
 
-
 ul li span:hover{
-    color: #0000bb;
+    color: white;
+    background: #ff0000;
 }
