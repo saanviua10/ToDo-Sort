@@ -1,3 +1,9 @@
+const taskInputEl = document.getElementById("taskInput");
+const timeInputEl = document.getElementById("timeInput");
+const dateInputEl = document.getElementById("dateInput");
+const priorityInputEl = document.getElementById("priorityInput");
+const tList = document.getElementById("taskList");
+
 const API_URL = 'http://localhost:3000/api/tasks';
 
 // Load tasks from the backend database
