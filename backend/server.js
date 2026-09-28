@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
@@ -6,9 +7,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Connect to Supabase PostgreSQL using your project connection string
+// Connect to Supabase PostgreSQL securely using the environment variable
 const pool = new Pool({
-    connectionString: 'postgresql://postgres:ToDoSorter2@db.zdevlbbezeazieqoxdtb.supabase.co:5432/postgres',
+    connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
 });
 
@@ -20,7 +21,6 @@ pool.connect()
 app.get('/api/tasks', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM tasks ORDER BY sort_value ASC');
-        // Map database columns to match what your frontend (todo.js) expects
         const tasks = result.rows.map(row => ({
             _id: row.id,
             text: row.text,
