@@ -16,5 +16,5 @@ This program uses HTML and CSS for the overall functionality of the frontend as 
 ### Middle Connection - JavaScript & API functionality
 We used JavaScript and created a local API so that the website saves the user's tasks on their local machine, ensuring that they do not have to type in their tasks every time they open the website.
 
-### Backend - PostgreSQL & Supabase
+### Backend - Node.js, PostgreSQL, Supabase
 The program connects to a PostgreSQL database, which is accessed through Supabase, allowing me to scale and see the number of users who are on the website and implementing its system to enhance their day-to-day lifestyle and ensure that all of their tasks are completed in a timely manner.
